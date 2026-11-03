@@ -26,17 +26,20 @@ function openapi(req) {
       description: "A demo API that returns a greeting when called with a valid API key.",
     },
     servers: [{ url: baseUrl(req) }],
-    components: {
-      securitySchemes: {
-        ApiKeyAuth: { type: "apiKey", in: "header", name: "x-api-key" },
-      },
-    },
     paths: {
       "/api/hello": {
         get: {
           summary: "Say hello",
           operationId: "hello",
-          security: [{ ApiKeyAuth: [] }],
+          parameters: [
+            {
+              name: "x-api-key",
+              in: "header",
+              required: true,
+              description: "Demo key from POST /api/demo-key",
+              schema: { type: "string" },
+            },
+          ],
           responses: {
             200: {
               description: "A greeting",
